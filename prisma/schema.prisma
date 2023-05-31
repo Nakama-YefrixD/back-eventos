@@ -1,0 +1,62 @@
+generator client {
+    provider = "prisma-client-js"
+}
+
+datasource db {
+    provider = "mysql"
+    url      = env("DATABASE_URL")
+}
+
+
+model usuusuarios {
+    usuid                       Int                           @id @default(autoincrement()) @db.UnsignedInt
+    tpuid                       Int                           @db.UnsignedInt
+    usutipo_documento_identidad String?                       @db.VarChar(15)
+    usunumero_dni               String?                       @db.VarChar(20)
+    usucodigo_ucs               String?                       @db.VarChar(255)
+    usufecha_nacimiento         String?                       @db.VarChar(50)
+    usucelular                  String?                       @db.VarChar(20)
+    usurol                      String?                       @db.VarChar(255)
+    usunombre                   String?                       @db.VarChar(255)
+    usuapell_paterno            String?                       @db.VarChar(255)
+    usuapell_materno            String?                       @db.VarChar(255)
+    usuimagen                   String?                       @db.VarChar(255)
+    usuusuario                  String?                       @db.VarChar(255)    
+    usucontrasena               String?                       @db.VarChar(255)
+    usutoken                    String                        @db.VarChar(255)
+    usuestado                   Boolean                       @default(true)
+    created_at                  DateTime?                     @default(now())
+    updated_at                  DateTime?                     @updatedAt @db.Timestamp(0)
+    tputiposusuarios            tputiposusuarios              @relation(fields: [tpuid], references: [tpuid], onUpdate: Restrict, map: "usuusuarios_tpuid_foreign")
+}
+
+model tputiposusuarios {
+    tpuid                    Int                        @id @default(autoincrement()) @db.UnsignedInt
+    tpunombre                String                     @db.VarChar(255)
+    created_at               DateTime?                  @default(now())
+    updated_at               DateTime?                  @updatedAt @db.Timestamp(0)
+    usuusuarios              usuusuarios[]
+    tuptiposusuariospermisos tuptiposusuariospermisos[]
+}
+
+model pempermisos {
+  pemid                    Int                        @id @default(autoincrement()) @db.UnsignedInt
+  pemnombre                String                     @db.VarChar(255)
+  pemslug                  String                     @db.VarChar(255)
+  pemruta                  String?                    @db.VarChar(255)
+  pemespecial              Boolean                    @default(false)
+  created_at               DateTime?                  @db.Timestamp(0)
+  updated_at               DateTime?                  @db.Timestamp(0)
+  tuptiposusuariospermisos tuptiposusuariospermisos[]
+}
+
+model tuptiposusuariospermisos {
+  tupid            Int               @id @default(autoincrement()) @db.UnsignedInt
+  pemid            Int?              @db.UnsignedInt
+  tpuid            Int?              @db.UnsignedInt
+  pempermisos      pempermisos?      @relation(fields: [pemid], references: [pemid], onUpdate: Restrict, map: "tuptiposusuariospermisos_pemid_foreign")
+  tputiposusuarios tputiposusuarios? @relation(fields: [tpuid], references: [tpuid], onUpdate: Restrict, map: "tuptiposusuariospermisos_tpuid_foreign")
+  created_at       DateTime?         @default(now())
+  updated_at       DateTime?         @db.Timestamp(0)
+}
+
