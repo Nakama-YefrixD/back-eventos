@@ -60,3 +60,47 @@ model tuptiposusuariospermisos {
   updated_at       DateTime?         @db.Timestamp(0)
 }
 
+model carreras {
+  id           Int          @id @default(autoincrement()) @db.UnsignedInt
+  nombre       String?      @db.VarChar(150)
+  created_at   DateTime?    @default(now())
+  updated_at   DateTime?    @db.Timestamp(0)
+  eventos      eventos[]
+}
+
+model eventos {
+  id                  Int          @id @default(autoincrement()) @db.UnsignedInt
+  carrera             Int?         @db.UnsignedInt
+  recurrente          Boolean      @default(false)
+  tipoensenanza       String?      @db.VarChar(50)
+  clasificacionevento String?      @db.VarChar(50)
+  tipoevento          String?      @db.VarChar(50)
+  organizacion        String?      @db.VarChar(150)
+  zoom                String?      @db.VarChar(150)
+  linkflyer           String?      @db.VarChar(150)
+  sede                String?      @db.VarChar(150)
+  auditoria           String?      @db.VarChar(150)
+  nombre              String?      @db.VarChar(150)
+  estado              Boolean      @default(true)
+  carreras            carreras?    @relation(fields: [carrera], references: [id], onUpdate: Restrict, map: "eventos_carrera_id_foreign")
+  created_at          DateTime?    @default(now())
+  updated_at          DateTime?    @db.Timestamp(0) 
+}
+
+model fechaseventos {
+  id            Int          @id @default(autoincrement()) @db.UnsignedInt
+  idevento      Int?         @db.UnsignedInt
+  fechora       String?      @db.VarChar(50)
+  fecha         String?      @db.VarChar(50)
+  hora          String?      @db.VarChar(50)
+  created_at    DateTime?    @default(now())
+  updated_at    DateTime?    @db.Timestamp(0) 
+}
+
+model ponenteseventos {
+  id            Int          @id @default(autoincrement()) @db.UnsignedInt
+  idevento      Int?         @db.UnsignedInt
+  ponente       String?      @db.VarChar(150)
+  created_at    DateTime?    @default(now())
+  updated_at    DateTime?    @db.Timestamp(0) 
+}
