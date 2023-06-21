@@ -37,7 +37,7 @@ controller.MetMostrarUsuarios = async (req, res) => {
         }
 
         res.status(200)
-        res.json({
+        return res.json({
             message : 'Usuarios obtenidos correctamente',
             data    : usuarios,
             respuesta : true,
@@ -47,7 +47,7 @@ controller.MetMostrarUsuarios = async (req, res) => {
     }catch(error){
         console.log(error)
         res.status(500)
-        res.json({
+        return res.json({
             message : 'Lo sentimos hubo un error al momento de mostrar los usuarios',
             devmsg  : error,
             respuesta : false
