@@ -18,7 +18,9 @@ controller.MetCrearEvento = async (req, res) => {
         req_nombre,
         req_estado,
         req_list_fechas,
-        req_list_ponentes
+        req_list_ponentes,
+        req_cupos,
+        req_hrsextra
     } = req.body;
 
     try{
@@ -36,7 +38,9 @@ controller.MetCrearEvento = async (req, res) => {
                 sede : req_sede,
                 auditoria : req_auditoria,
                 nombre : req_nombre,
-                estado : req_estado
+                estado : req_estado,
+                cupos : req_cupos ? parseInt(req_cupos) : null,
+                hrsextracurriculares : req_hrsextra ? parseInt(req_hrsextra) : null
             }
         })
 

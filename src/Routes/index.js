@@ -17,6 +17,11 @@ const MostrarEvento  = require('../Controllers/Methods/GestionEventos/MostrarEve
 const MostrarFechasEventos  = require('../Controllers/Methods/GestionEventos/MostrarFechas')
 const MostrarPonentesEventos  = require('../Controllers/Methods/GestionEventos/MostrarPonentes')
 
+// // // // // // // // // //
+// EVENTOS DISPONIBLES // //
+// // // // // // // // // //
+const MostrarEventosDisponibles  = require('../Controllers/Methods/EventosDisponibles/MostrarEventosDisponibles')
+
 // // // // // // //  //  
 // GESTION DE CARRERAS // 
 // // // // // // //  // 
@@ -31,9 +36,25 @@ const EliminarCarrera  = require('../Controllers/Methods/GestionCarreras/Elimina
 // // // // // // //
 const CargaMasiva  = require('../Controllers/Methods/GestionCargaMasiva/CargaMasivaEstudiantes')
 
+// // // // // 
+// LOGIN // // 
+// // // // // 
+const Login = require('../Controllers/Methods/Login/Login')
+
+// // // // // // // // //
+// RECUPERAR CONTRASEÑA //
+// // // // // // // // //
+const RecuperarContrasenia = require('../Controllers/Methods/Login/EnviarRecuperar')
+
+
+// // // // // //
+// HOME EVENTOS //
+// // // // // // 
+const Home = require('../Controllers/Methods/Home/Home')
 
 const authMiddleware = require('../Middleware/authMiddleware')
 const permissionMiddleware = require('../Middleware/permissionMiddleware')
+const CambiarContrasenia = require('../Controllers/Methods/Login/Recuperar')
 
 const protectedRoutes = express.Router();
 // protectedRoutes.use(authMiddleware);
@@ -70,6 +91,28 @@ protectedRoutes.post('/administrador/crear-carrera', CrearCarrera.MetCrearCarrer
 protectedRoutes.post('/carga-masiva/usuarios-estudiantes', CargaMasiva.MetCargaMasivaEstudiantes )
 
 
+// // // // // 
+// LOGIN // // 
+// // // // // 
+protectedRoutes.post('/login', Login.MetLogin )
+
+
+// // // // // // // // //
+// RECUPERAR CONTRASEÑA //
+// // // // // // // // //
+protectedRoutes.post('/recuperar-contrasenia', RecuperarContrasenia.MetRecuperar ) // Envia el correo
+protectedRoutes.post('/cambiar-contrasenia', CambiarContrasenia.MetCambiarContrasenia ) // Cambia la contraseña
+
+// // // // // //
+// HOME EVENTOS //
+// // // // // // 
+protectedRoutes.post('/home-eventos', Home.MetEventosHome )
+
+
+// // // // // // // // // //
+// EVENTOS DISPONIBLES // //
+// // // // // // // // // //
+protectedRoutes.post('/mostrar-eventos-disponibles', MostrarEventosDisponibles.MetMostrarEventosDisponibles )
 
 router.use('/protected', protectedRoutes);
 

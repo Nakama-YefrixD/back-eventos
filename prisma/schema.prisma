@@ -69,22 +69,26 @@ model carreras {
 }
 
 model eventos {
-  id                  Int          @id @default(autoincrement()) @db.UnsignedInt
-  carrera             Int?         @db.UnsignedInt
-  recurrente          Boolean      @default(false)
-  tipoensenanza       String?      @db.VarChar(50)
-  clasificacionevento String?      @db.VarChar(50)
-  tipoevento          String?      @db.VarChar(50)
-  organizacion        String?      @db.VarChar(150)
-  zoom                String?      @db.VarChar(150)
-  linkflyer           String?      @db.VarChar(150)
-  sede                String?      @db.VarChar(150)
-  auditoria           String?      @db.VarChar(150)
-  nombre              String?      @db.VarChar(150)
-  estado              Boolean      @default(true)
-  carreras            carreras?    @relation(fields: [carrera], references: [id], onUpdate: Restrict, map: "eventos_carrera_id_foreign")
-  created_at          DateTime?    @default(now())
-  updated_at          DateTime?    @db.Timestamp(0) 
+  id                    Int             @id @default(autoincrement()) @db.UnsignedInt
+  carrera               Int?            @db.UnsignedInt
+  recurrente            Boolean         @default(false)
+  tipoensenanza         String?         @db.VarChar(50)
+  clasificacionevento   String?         @db.VarChar(50)
+  tipoevento            String?         @db.VarChar(50)
+  organizacion          String?         @db.VarChar(150)
+  zoom                  String?         @db.VarChar(150)
+  linkflyer             String?         @db.VarChar(150)
+  sede                  String?         @db.VarChar(150)
+  auditoria             String?         @db.VarChar(150)
+  nombre                String?         @db.VarChar(150)
+  estado                Boolean         @default(true)
+  cupos                 Int?            @db.Int()
+  hrsextracurriculares  Int?            @db.Int()
+  created_at            DateTime?       @default(now())
+  updated_at            DateTime?       @db.Timestamp(0)
+  carreras              carreras?       @relation(fields: [carrera], references: [id], onUpdate: Restrict, map: "eventos_carrera_id_foreign")
+  fechaseventos         fechaseventos[]
+
 }
 
 model fechaseventos {
@@ -94,7 +98,8 @@ model fechaseventos {
   fecha         String?      @db.VarChar(50)
   hora          String?      @db.VarChar(50)
   created_at    DateTime?    @default(now())
-  updated_at    DateTime?    @db.Timestamp(0) 
+  updated_at    DateTime?    @db.Timestamp(0)
+  eventos       eventos?     @relation(fields: [idevento], references: [id], onUpdate: Restrict, map: "fechaseventos_evento_id_foreign")
 }
 
 model ponenteseventos {
