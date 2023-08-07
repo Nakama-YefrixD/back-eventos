@@ -2,7 +2,7 @@ const controller = {}
 const { PrismaClient } = require('@prisma/client')
 const prisma = new PrismaClient()
 
-controller.MetMostrarEventosDisponibles = async (req, res) => {
+controller.MetEventosRealizados = async (req, res) => {
 
     const {
         req_usutoken
@@ -10,7 +10,9 @@ controller.MetMostrarEventosDisponibles = async (req, res) => {
 
     try{
 
-        let eventos = []
+        let eventos_realizados = []
+        let respuesta = true
+        let mensaje = "Los eventos realizados fueron obtenidos correctamente"
 
         const usuusuario = await prisma.usuusuarios.findFirst({
             where:{
@@ -19,26 +21,24 @@ controller.MetMostrarEventosDisponibles = async (req, res) => {
         })
 
         if(usuusuario){
-            eventos = await prisma.eventos.findMany({
-                include: {
-                    eventosusuarios: {
-                        where: {
-                            usuid: usuusuario.usuid,
-                        }
-                    }
+            eventos_realizados = await prisma.eventosusuarios.findMany({
+                where: {
+                    usuid : usuusuario.usuid
                 },
-                where:{
-                    estado : true
+                include: {
+                    eventos: true
                 }
-            });
+            })
+        }else{
+            respuesta = true
+            mensaje = "Lo sentimos el usuario no se encontro"
         }
 
         res.status(200)
         return res.json({
-            message   : 'Eventos obtenidos correctamente',
-            data      : eventos, 
-            usuari    : usuusuario,
-            respuesta : true
+            message   : mensaje,
+            data      : eventos_realizados,
+            respuesta : respuesta
         })
 
     }catch(error){

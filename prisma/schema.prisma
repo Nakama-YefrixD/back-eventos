@@ -28,6 +28,7 @@ model usuusuarios {
     created_at                  DateTime?                     @default(now())
     updated_at                  DateTime?                     @updatedAt @db.Timestamp(0)
     tputiposusuarios            tputiposusuarios              @relation(fields: [tpuid], references: [tpuid], onUpdate: Restrict, map: "usuusuarios_tpuid_foreign")
+    eventosusuarios             eventosusuarios[]
 }
 
 model tputiposusuarios {
@@ -46,7 +47,7 @@ model pempermisos {
   pemruta                  String?                    @db.VarChar(255)
   pemespecial              Boolean                    @default(false)
   created_at               DateTime?                  @db.Timestamp(0)
-  updated_at               DateTime?                  @db.Timestamp(0)
+  updated_at               DateTime?                  @updatedAt @db.Timestamp(0)
   tuptiposusuariospermisos tuptiposusuariospermisos[]
 }
 
@@ -57,14 +58,14 @@ model tuptiposusuariospermisos {
   pempermisos      pempermisos?      @relation(fields: [pemid], references: [pemid], onUpdate: Restrict, map: "tuptiposusuariospermisos_pemid_foreign")
   tputiposusuarios tputiposusuarios? @relation(fields: [tpuid], references: [tpuid], onUpdate: Restrict, map: "tuptiposusuariospermisos_tpuid_foreign")
   created_at       DateTime?         @default(now())
-  updated_at       DateTime?         @db.Timestamp(0)
+  updated_at       DateTime?         @updatedAt @db.Timestamp(0)
 }
 
 model carreras {
   id           Int          @id @default(autoincrement()) @db.UnsignedInt
   nombre       String?      @db.VarChar(150)
   created_at   DateTime?    @default(now())
-  updated_at   DateTime?    @db.Timestamp(0)
+  updated_at   DateTime?    @updatedAt @db.Timestamp(0)
   eventos      eventos[]
 }
 
@@ -85,10 +86,10 @@ model eventos {
   cupos                 Int?            @db.Int()
   hrsextracurriculares  Int?            @db.Int()
   created_at            DateTime?       @default(now())
-  updated_at            DateTime?       @db.Timestamp(0)
+  updated_at            DateTime?       @updatedAt @db.Timestamp(0)
   carreras              carreras?       @relation(fields: [carrera], references: [id], onUpdate: Restrict, map: "eventos_carrera_id_foreign")
   fechaseventos         fechaseventos[]
-
+  eventosusuarios       eventosusuarios[]
 }
 
 model fechaseventos {
@@ -98,7 +99,7 @@ model fechaseventos {
   fecha         String?      @db.VarChar(50)
   hora          String?      @db.VarChar(50)
   created_at    DateTime?    @default(now())
-  updated_at    DateTime?    @db.Timestamp(0)
+  updated_at    DateTime?    @updatedAt @db.Timestamp(0)
   eventos       eventos?     @relation(fields: [idevento], references: [id], onUpdate: Restrict, map: "fechaseventos_evento_id_foreign")
 }
 
@@ -107,5 +108,17 @@ model ponenteseventos {
   idevento      Int?         @db.UnsignedInt
   ponente       String?      @db.VarChar(150)
   created_at    DateTime?    @default(now())
-  updated_at    DateTime?    @db.Timestamp(0) 
+  updated_at    DateTime?    @updatedAt @db.Timestamp(0)
+}
+
+model eventosusuarios {
+  id            Int          @id @default(autoincrement()) @db.UnsignedInt
+  usuid         Int?         @db.UnsignedInt
+  idevento      Int?         @db.UnsignedInt
+  certificado   String?      @db.VarChar(250)
+  encuestado    Boolean      @default(false)
+  created_at    DateTime?    @default(now())
+  updated_at    DateTime?    @updatedAt @db.Timestamp(0)
+  eventos       eventos?     @relation(fields: [idevento], references: [id], onUpdate: Restrict, map: "eventosusuarios_evento_id_foreign")
+  usuusuarios   usuusuarios? @relation(fields: [usuid], references: [usuid], onUpdate: Restrict, map: "eventosusuarios_usuid_foreign")
 }

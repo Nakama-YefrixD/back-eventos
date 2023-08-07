@@ -30,6 +30,8 @@ controller.MetEliminarCarrera = async (req, res) => {
             devmsg  : error,
             respuesta : false
         })
+    } finally {
+        prisma.$disconnect();
     }
 }
 

@@ -58,7 +58,7 @@ controller.MetCrearUsuario = async (req, res) => {
         })
 
         res.status(200)
-        res.json({
+        return res.json({
             message : 'El usuario fue creado correctamente',
             respuesta : true
         })
@@ -66,11 +66,13 @@ controller.MetCrearUsuario = async (req, res) => {
     }catch(error){
         console.log(error)
         res.status(500)
-        res.json({
+        return res.json({
             message : 'Lo sentimos hubo un error al momento de crear los usuarios',
             devmsg  : error,
             respuesta : false
         })
+    } finally {
+        prisma.$disconnect();
     }
 }
 

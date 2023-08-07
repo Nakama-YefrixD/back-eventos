@@ -4,7 +4,7 @@ const prisma = new PrismaClient()
 
 controller.MetCrearEvento = async (req, res) => {
 
-    const {
+    let {
         req_carrera,
         req_recurrente,
         req_tipoensenanza,
@@ -25,26 +25,42 @@ controller.MetCrearEvento = async (req, res) => {
 
     try{
 
+        // ALMACENAR EL ARCHIVO EN EL SERVIDOR
+        let EDFile = req.files.archivo
+
+        const longtxt = await GenerateRandomString(5)
+        const nombrearchivo = EDFile.name
+        const resultado = `${nombrearchivo.split(".")[0]}-${longtxt}.${nombrearchivo.split(".")[1]}`;
+        const rutaexactaflyer = `./src/public/eventos/flyer/${resultado}`
+
+        EDFile.mv(rutaexactaflyer,err => {
+            if(err) return res.status(500).send({ message : err })
+        })
+
         const nevento = await prisma.eventos.create({
             data: {
                 carrera : parseInt(req_carrera),
-                recurrente : req_recurrente,
+                recurrente : Boolean(req_recurrente),
                 tipoensenanza : req_tipoensenanza,
                 clasificacionevento : req_clasificacionevento,
                 tipoevento : req_tipoevento,
                 organizacion : req_organizacion,
                 zoom : req_zoom,
-                linkflyer : req_linkflyer,
+                linkflyer : '/mostrar-flyter-evento/'+resultado,
                 sede : req_sede,
                 auditoria : req_auditoria,
                 nombre : req_nombre,
-                estado : req_estado,
+                estado : Boolean(req_estado),
                 cupos : req_cupos ? parseInt(req_cupos) : null,
                 hrsextracurriculares : req_hrsextra ? parseInt(req_hrsextra) : null
             }
         })
 
+        req_list_fechas = JSON.parse(req_list_fechas)
+        req_list_ponentes = JSON.parse(req_list_ponentes)
+
         for await (let reqfecha of req_list_fechas){
+
             const dateObj = new Date(reqfecha.fecha);
             const fecha_obtenida = dateObj.toISOString().slice(0, 10);
             const hora_obtenida = dateObj.toLocaleTimeString();
@@ -68,6 +84,7 @@ controller.MetCrearEvento = async (req, res) => {
             })
         }
 
+
         res.status(200)
         return res.json({
             message : 'El evento fue creado correctamente',
@@ -82,7 +99,24 @@ controller.MetCrearEvento = async (req, res) => {
             devmsg  : error,
             respuesta : false
         })
+    } finally {
+        prisma.$disconnect();
     }
+}
+
+const GenerateRandomString = async (longitud) => {
+    
+    let cadena = '';
+    const caracteres = '0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ';
+    const caracteresLength = caracteres.length;
+  
+    for (let i = 0; i < longitud; i++) {
+      const indiceAleatorio = Math.floor(Math.random() * caracteresLength);
+      const caracterAleatorio = caracteres.charAt(indiceAleatorio);
+      cadena += caracterAleatorio;
+    }
+  
+    return cadena;
 }
 
 

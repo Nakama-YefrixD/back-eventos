@@ -18,7 +18,8 @@ controller.MetEventosHome = async (req, res) => {
                 carreras : true,
                 id: true,
                 nombre: true,
-                fechaseventos: true
+                fechaseventos: true,
+                linkflyer: true
             }
         })
 
@@ -50,6 +51,8 @@ controller.MetEventosHome = async (req, res) => {
             devmsg  : error,
             respuesta : false
         })
+    } finally {
+        prisma.$disconnect();
     }
 }
 

@@ -1,5 +1,7 @@
 const express = require('express')
 const router = express.Router()
+const multer = require('multer');
+const path = require('path');
 
 const CrearUsuario    = require('../Controllers/Methods/GestionUsuarios/CrearUsuarios')
 const EditarUsuario   = require('../Controllers/Methods/GestionUsuarios/EditarUsuarios')
@@ -21,6 +23,22 @@ const MostrarPonentesEventos  = require('../Controllers/Methods/GestionEventos/M
 // EVENTOS DISPONIBLES // //
 // // // // // // // // // //
 const MostrarEventosDisponibles  = require('../Controllers/Methods/EventosDisponibles/MostrarEventosDisponibles')
+const InscribirmeEvento  = require('../Controllers/Methods/EventosDisponibles/InscribirEventoDisponible')
+
+// // // // // // // // // //
+// MIS CERTIFICADOS // //
+// // // // // // // // // //
+const MisCertificados = require('../Controllers/Methods/MisCertificados/MisCertificados')
+
+// // // // // // // // // //
+// EVENTOS REALIZADOS // //
+// // // // // // // // // //
+const EventosRealizados = require('../Controllers/Methods/EventosRealizados/EventosRealizados')
+
+// // // // // // // // // //
+// EVENTOS INSCRITOS // //
+// // // // // // // // // //
+const EventosInscritos = require('../Controllers/Methods/EventosInscritos/EventosInscritos')
 
 // // // // // // //  //  
 // GESTION DE CARRERAS // 
@@ -57,6 +75,7 @@ const permissionMiddleware = require('../Middleware/permissionMiddleware')
 const CambiarContrasenia = require('../Controllers/Methods/Login/Recuperar')
 
 const protectedRoutes = express.Router();
+const publicRoutes = express.Router();
 // protectedRoutes.use(authMiddleware);
 
 protectedRoutes.post('/administrador/crear-usuario', CrearUsuario.MetCrearUsuario)
@@ -69,12 +88,31 @@ protectedRoutes.post('/administrador/mostrar-usuario', MostrarUsuario.MetMostrar
 // GESTION DE EVENTOS // 
 // // // // // // //  // 
 
-protectedRoutes.post('/administrador/crear-evento', CrearEvento.MetCrearEvento )
 protectedRoutes.post('/administrador/editar-evento', EditarEvento.MetEditarEvento )
 protectedRoutes.post('/administrador/eliminar-evento', EliminarEvento.MetEliminarEvento )
 protectedRoutes.post('/administrador/mostrar-eventos', MostrarEvento.MetMostrarEventos )
 protectedRoutes.post('/administrador/mostrar-fechas-eventos', MostrarFechasEventos.MetMostrarFechasEventos )
 protectedRoutes.post('/administrador/mostrar-ponentes-eventos', MostrarPonentesEventos.MetMostrarPonentesEvento )
+
+
+const storage = multer.diskStorage({
+    destination: function (req, file, cb) {
+        // Aquí especificas la carpeta donde deseas almacenar los archivos dentro de la API
+        const destinationFolder = path.join(__dirname, 'carpeta_especifica');
+        cb(null, destinationFolder);
+    },
+    filename: function (req, file, cb) {
+        cb(null, file.originalname);
+    },
+});
+
+const upload = multer({ storage });
+
+protectedRoutes.post('/administrador/crear-evento', (req, res) => {
+    return CrearEvento.MetCrearEvento(req, res)
+})
+
+
 
 // // // // // // //  //  
 // GESTION DE CARRERAS // 
@@ -113,7 +151,37 @@ protectedRoutes.post('/home-eventos', Home.MetEventosHome )
 // EVENTOS DISPONIBLES // //
 // // // // // // // // // //
 protectedRoutes.post('/mostrar-eventos-disponibles', MostrarEventosDisponibles.MetMostrarEventosDisponibles )
+protectedRoutes.post('/inscribir-usuario-evento', InscribirmeEvento.MetInscribirEvento )
 
+// // // // // // // // // //
+// MIS CERTIFICADOS // //
+// // // // // // // // // //
+protectedRoutes.post('/mostrar-mis-certificados', MisCertificados.MetMostrarMisCertificados )
+
+// // // // // // // // // //
+// EVENTOS REALIZADOS // //
+// // // // // // // // // //
+protectedRoutes.post('/mostrar-eventos-realizados', EventosRealizados.MetEventosRealizados )
+
+// // // // // // // // // //
+// EVENTOS INSCRITOS // //
+// // // // // // // // // //
+protectedRoutes.post('/mostrar-eventos-inscritos', EventosInscritos.MetEventosInscritos )
+
+
+// // // // // // // // // //
+// MOSTRAR ARCHIVOS // //
+// // // // // // // // // //
+publicRoutes.get('/mostrar-flyter-evento/:file', (req, res) => {
+    const {
+        file
+    } = req.params
+
+    const filePath = path.join(__dirname, '../public/eventos/flyer/'+file);
+    res.sendFile(filePath);
+});
+
+router.use('/public', publicRoutes);
 router.use('/protected', protectedRoutes);
 
 module.exports = router
