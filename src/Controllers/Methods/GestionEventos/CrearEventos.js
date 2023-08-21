@@ -34,7 +34,8 @@ controller.MetCrearEvento = async (req, res) => {
         const longtxt = await GenerateRandomString(5)
         const nombrearchivo = EDFile.name
         const resultado = `${nombrearchivo.split(".")[0]}-${longtxt}.${nombrearchivo.split(".")[1]}`;
-        const rutaexactaflyer = `./src/public/eventos/flyer/${resultado}`
+        // const rutaexactaflyer = `./src/public/eventos/flyer/${resultado}`
+        const rutaexactaflyer = `src/public/eventos/flyer/${resultado}`
 
         EDFile.mv(rutaexactaflyer,err => {
             if(err) return res.status(500).send({ message : err })
