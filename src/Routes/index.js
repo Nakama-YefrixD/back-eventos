@@ -30,6 +30,11 @@ const InscribirmeEvento  = require('../Controllers/Methods/EventosDisponibles/In
 // // // // // // // // // //
 const MisCertificados = require('../Controllers/Methods/MisCertificados/MisCertificados')
 
+// // // // // // // // // // // //
+// MIS HORAS EXTRACURRICULARES // //
+// // // // // // // // // // // //
+const MisHrsExtracurriculares = require('../Controllers/Methods/HorasExtracurriculares/HorasExtracurriculares')
+
 // // // // // // // // // //
 // EVENTOS REALIZADOS // //
 // // // // // // // // // //
@@ -54,6 +59,11 @@ const EliminarCarrera  = require('../Controllers/Methods/GestionCarreras/Elimina
 // // // // // // //
 const CargaMasiva  = require('../Controllers/Methods/GestionCargaMasiva/CargaMasivaEstudiantes')
 
+// // // // // // //
+// CARGA ASISTENCIAS EVENTOS     
+// // // // // // //
+const CargaAsistencias  = require('../Controllers/Methods/CargaAsistencias/CargaAsistencias')
+
 // // // // // 
 // LOGIN // // 
 // // // // // 
@@ -69,6 +79,11 @@ const RecuperarContrasenia = require('../Controllers/Methods/Login/EnviarRecuper
 // HOME EVENTOS //
 // // // // // // 
 const Home = require('../Controllers/Methods/Home/Home')
+
+// // // // // // // // // // // // // 
+// OTROS | MOSTRAR LISTA DE PONENTES //
+// // // // // // // // // // // // // 
+const MetMostrarListaPonentes = require('../Controllers/Methods/GestionEventos/MostrarListaPonentes')
 
 const authMiddleware = require('../Middleware/authMiddleware')
 const permissionMiddleware = require('../Middleware/permissionMiddleware')
@@ -128,6 +143,10 @@ protectedRoutes.post('/administrador/crear-carrera', CrearCarrera.MetCrearCarrer
 // // // // // // //
 protectedRoutes.post('/carga-masiva/usuarios-estudiantes', CargaMasiva.MetCargaMasivaEstudiantes )
 
+// // // // // // //
+// CARGA ASISTENCIAS EVENTOS     
+// // // // // // //
+protectedRoutes.post('/carga-masiva/asistencias-eventos', CargaAsistencias.MetCargarAsistencias )
 
 // // // // // 
 // LOGIN // // 
@@ -158,6 +177,11 @@ protectedRoutes.post('/inscribir-usuario-evento', InscribirmeEvento.MetInscribir
 // // // // // // // // // //
 protectedRoutes.post('/mostrar-mis-certificados', MisCertificados.MetMostrarMisCertificados )
 
+// // // // // // // // // // // //
+// MIS HORAS EXTRACURRICULARES // //
+// // // // // // // // // // // //
+protectedRoutes.post('/mostrar-mis-hrs-extracurriculares', MisHrsExtracurriculares.MetMostrarHorasExtracurriculares )
+
 // // // // // // // // // //
 // EVENTOS REALIZADOS // //
 // // // // // // // // // //
@@ -180,6 +204,12 @@ publicRoutes.get('/mostrar-flyter-evento/:file', (req, res) => {
     const filePath = path.join(__dirname, '../public/eventos/flyer/'+file);
     res.sendFile(filePath);
 });
+
+
+// // // // // // // // // // // // // 
+// OTROS | MOSTRAR LISTA DE PONENTES //
+// // // // // // // // // // // // // 
+protectedRoutes.post('/administrador/mostrar-lista-ponentes', MetMostrarListaPonentes.MetMostrarListaPonentes )
 
 router.use('/public', publicRoutes);
 router.use('/protected', protectedRoutes);

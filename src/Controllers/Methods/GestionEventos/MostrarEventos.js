@@ -21,13 +21,19 @@ controller.MetMostrarEventos = async (req, res) => {
                     fechahora : {
                         contains : req_fecha
                     }
-                }
+                },
+                orderBy: {
+                    created_at: 'desc'
+                },
             })
         }else if(req_estado){
             eventos = await prisma.eventos.findMany({
                 where: {
                     estado : req_estado == 'false' ? false : true
-                }
+                },
+                orderBy: {
+                    created_at: 'desc'
+                },
             })
         }else if(req_fecha){
             eventos = await prisma.eventos.findMany({
@@ -35,10 +41,17 @@ controller.MetMostrarEventos = async (req, res) => {
                     fechahora : {
                         contains : req_fecha
                     }
-                }
+                },
+                orderBy: {
+                    created_at: 'desc'
+                },
             })
         }else{
-            eventos = await prisma.eventos.findMany({})
+            eventos = await prisma.eventos.findMany({
+                orderBy: {
+                    created_at: 'desc'
+                },
+            })
         }
 
         res.status(200)

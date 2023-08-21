@@ -1,6 +1,7 @@
 const controller = {}
 const { PrismaClient } = require('@prisma/client')
 const prisma = new PrismaClient()
+const crypto = require('crypto')
 
 controller.MetCrearEvento = async (req, res) => {
 
@@ -25,6 +26,8 @@ controller.MetCrearEvento = async (req, res) => {
 
     try{
 
+        const codigoevento = crypto.randomBytes(10).toString('hex')
+
         // ALMACENAR EL ARCHIVO EN EL SERVIDOR
         let EDFile = req.files.archivo
 
@@ -39,6 +42,7 @@ controller.MetCrearEvento = async (req, res) => {
 
         const nevento = await prisma.eventos.create({
             data: {
+                codigo  : codigoevento,
                 carrera : parseInt(req_carrera),
                 recurrente : Boolean(req_recurrente),
                 tipoensenanza : req_tipoensenanza,

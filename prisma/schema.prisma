@@ -29,6 +29,7 @@ model usuusuarios {
     updated_at                  DateTime?                     @updatedAt @db.Timestamp(0)
     tputiposusuarios            tputiposusuarios              @relation(fields: [tpuid], references: [tpuid], onUpdate: Restrict, map: "usuusuarios_tpuid_foreign")
     eventosusuarios             eventosusuarios[]
+    asistenciaseventos          asistenciaseventos[]
 }
 
 model tputiposusuarios {
@@ -73,6 +74,7 @@ model eventos {
   id                    Int             @id @default(autoincrement()) @db.UnsignedInt
   carrera               Int?            @db.UnsignedInt
   recurrente            Boolean         @default(false)
+  codigo                String?         @db.VarChar(50)
   tipoensenanza         String?         @db.VarChar(50)
   clasificacionevento   String?         @db.VarChar(50)
   tipoevento            String?         @db.VarChar(50)
@@ -90,6 +92,7 @@ model eventos {
   carreras              carreras?       @relation(fields: [carrera], references: [id], onUpdate: Restrict, map: "eventos_carrera_id_foreign")
   fechaseventos         fechaseventos[]
   eventosusuarios       eventosusuarios[]
+  asistenciaseventos    asistenciaseventos[]
 }
 
 model fechaseventos {
@@ -121,4 +124,18 @@ model eventosusuarios {
   updated_at    DateTime?    @updatedAt @db.Timestamp(0)
   eventos       eventos?     @relation(fields: [idevento], references: [id], onUpdate: Restrict, map: "eventosusuarios_evento_id_foreign")
   usuusuarios   usuusuarios? @relation(fields: [usuid], references: [usuid], onUpdate: Restrict, map: "eventosusuarios_usuid_foreign")
+}
+
+model asistenciaseventos {
+  id                Int          @id @default(autoincrement()) @db.UnsignedInt
+  usuid             Int?         @db.UnsignedInt
+  idevento          Int?         @db.UnsignedInt
+  codigoevento      String?      @db.VarChar(50)
+  codigoestudiante  String?      @db.VarChar(250)
+  fecha             String?      @db.VarChar(20)
+  asistio           Boolean      @default(false)
+  created_at        DateTime?    @default(now())
+  updated_at        DateTime?    @updatedAt @db.Timestamp(0)
+  eventos           eventos?     @relation(fields: [idevento], references: [id], onUpdate: Restrict, map: "asistenciaseventos_evento_id_foreign")
+  usuusuarios       usuusuarios? @relation(fields: [usuid], references: [usuid], onUpdate: Restrict, map: "asistenciaseventos_usuid_foreign")
 }

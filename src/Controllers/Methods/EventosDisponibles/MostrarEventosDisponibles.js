@@ -29,7 +29,10 @@ controller.MetMostrarEventosDisponibles = async (req, res) => {
                 },
                 where:{
                     estado : true
-                }
+                },
+                orderBy: {
+                    created_at: 'desc'
+                },
             });
         }
 
