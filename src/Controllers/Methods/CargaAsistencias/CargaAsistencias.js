@@ -48,6 +48,7 @@ controller.MetCargarAsistencias = async (req, res) => {
         console.log(data);
         let idseventos = [];
         let idsusuarios = [];
+        let idsfechaseventos = [];
 
         for await(const dat of data){
 
@@ -80,24 +81,72 @@ controller.MetCargarAsistencias = async (req, res) => {
                 }
             }
 
-            if(evento_seleccionado && usuario_seleccionado){
-                 
-                const millisecondsPerDay = 24 * 60 * 60 * 1000; // Milisegundos en un día
-                const baseDate = new Date(1899, 11, 30);  // La fecha base en Excel
 
-                const dateInMilliseconds = baseDate.getTime() + (dat.fecha * millisecondsPerDay);
-                const formattedDate = new Date(dateInMilliseconds);
+            let fechaevento_seleccionado = idsfechaseventos.find(
+                (idfechaevento) => idfechaevento.fecha == dat.fecha && idfechaevento.hora == dat.hora
+            )
 
-                await prisma.asistenciaseventos.create({
-                    data: {
-                        idevento : evento_seleccionado.id,
-                        usuid : usuario_seleccionado.usuid,
-                        fecha : formattedDate,
-                        asistio : dat.asistio == "Si" ? true : false,
-                        codigoestudiante : dat.codigo_estudiante,
-                        codigoevento : dat.codigo_evento
+            if(!fechaevento_seleccionado){
+                const fecha_evento = await prisma.fechaseventos.findFirst({
+                    where: {
+                        fecha : dat.fecha,
+                        hora : dat.hora
                     }
                 })
+
+                if(fecha_evento){
+                    idsfechaseventos.push(fecha_evento)
+                    fechaevento_seleccionado = fecha_evento
+                }
+            }
+
+            
+            if(evento_seleccionado && usuario_seleccionado && fechaevento_seleccionado){
+                
+                console.log(fechaevento_seleccionado);
+                // const millisecondsPerDay = 24 * 60 * 60 * 1000; // Milisegundos en un día
+                // const baseDate = new Date(1899, 11, 30);  // La fecha base en Excel
+
+                // const dateInMilliseconds = baseDate.getTime() + (dat.fecha * millisecondsPerDay);
+                // const formattedDate = new Date(dateInMilliseconds);
+
+                const asistencia_evento = await prisma.asistenciaseventos.findMany({
+                    where : {
+                        idevento : evento_seleccionado.id,
+                        usuid : usuario_seleccionado.usuid,
+                        codigoevento : dat.codigo_evento,
+                        id_fec_event : fechaevento_seleccionado.id
+                    },
+                    take : 1
+                })
+
+                if(asistencia_evento.length > 0){
+
+                    console.log("Existe el registro");
+                    console.log(asistencia_evento);
+
+                    await prisma.asistenciaseventos.update({
+                        where: {
+                            id : asistencia_evento[0]['id']
+                        },
+                        data: {
+                            asistio : dat.asistio == "Si" ? true : false,
+                        }
+                    })
+
+                }else{
+                    await prisma.asistenciaseventos.create({
+                        data: {
+                            idevento : evento_seleccionado.id,
+                            usuid : usuario_seleccionado.usuid,
+                            fecha : fechaevento_seleccionado.fecha,
+                            asistio : dat.asistio == "Si" ? true : false,
+                            codigoestudiante : dat.codigo_estudiante,
+                            codigoevento : dat.codigo_evento,
+                            id_fec_event : fechaevento_seleccionado.id
+                        }
+                    })
+                }
             }
         }
 
@@ -154,8 +203,11 @@ controller.ValCellsFile = async (workbook) => {
 
     const columns = {
         ex_codigo_evento     : 'codigo_evento',
+        ex_nombre_evento     : 'Nombre_Evento',
         ex_codigo_estudiante : 'codigo_estudiante',
+        ex_estudiante        : 'Estudiante',
         ex_fecha             : 'fecha',
+        ex_hora              : 'hora',
         ex_asistio           : 'asistio',
     }
 
@@ -189,9 +241,12 @@ controller.ValCellsFile = async (workbook) => {
 
         data.push({
             codigo_evento     : row[properties[0]] ? row[properties[0]] : '',
-            codigo_estudiante : row[properties[1]] ? row[properties[1]] : '',
-            fecha             : row[properties[2]] ? row[properties[2]] : '',
-            asistio           : row[properties[3]] ? row[properties[3]] : ''
+            Nombre_Evento     : row[properties[1]] ? row[properties[1]] : '',
+            codigo_estudiante : row[properties[2]] ? row[properties[2]] : '',
+            Estudiante        : row[properties[3]] ? row[properties[3]] : '',
+            fecha             : row[properties[4]] ? row[properties[4]] : '',
+            hora              : row[properties[5]] ? row[properties[5]] : '',
+            asistio           : row[properties[6]] ? row[properties[6]] : ''
         })
 
         num_row = num_row + 1

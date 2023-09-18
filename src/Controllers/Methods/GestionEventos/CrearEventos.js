@@ -28,18 +28,21 @@ controller.MetCrearEvento = async (req, res) => {
 
         const codigoevento = crypto.randomBytes(10).toString('hex')
 
-        // ALMACENAR EL ARCHIVO EN EL SERVIDOR
-        let EDFile = req.files.archivo
+        let resultado = null
+        
+        if(req.files){
+            // ALMACENAR EL ARCHIVO EN EL SERVIDOR
+            let EDFile = req.files.archivo
+            const longtxt = await GenerateRandomString(5)
+            const nombrearchivo = EDFile.name
+            resultado = `${nombrearchivo.split(".")[0]}-${longtxt}.${nombrearchivo.split(".")[1]}`;
+            // const rutaexactaflyer = `./src/public/eventos/flyer/${resultado}`
+            const rutaexactaflyer = `src/public/eventos/flyer/${resultado}`
 
-        const longtxt = await GenerateRandomString(5)
-        const nombrearchivo = EDFile.name
-        const resultado = `${nombrearchivo.split(".")[0]}-${longtxt}.${nombrearchivo.split(".")[1]}`;
-        // const rutaexactaflyer = `./src/public/eventos/flyer/${resultado}`
-        const rutaexactaflyer = `src/public/eventos/flyer/${resultado}`
-
-        EDFile.mv(rutaexactaflyer,err => {
-            if(err) return res.status(500).send({ message : err })
-        })
+            EDFile.mv(rutaexactaflyer,err => {
+                if(err) return res.status(500).send({ message : err })
+            })
+        }
 
         const nevento = await prisma.eventos.create({
             data: {

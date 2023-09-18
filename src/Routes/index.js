@@ -58,6 +58,7 @@ const EliminarCarrera  = require('../Controllers/Methods/GestionCarreras/Elimina
 // CARGA MASIVA     
 // // // // // // //
 const CargaMasiva  = require('../Controllers/Methods/GestionCargaMasiva/CargaMasivaEstudiantes')
+const DescargaMasivaPlantilla  = require('../Controllers/Methods/GestionCargaMasiva/DescargarPlantilla')
 
 // // // // // // //
 // CARGA ASISTENCIAS EVENTOS     
@@ -142,6 +143,7 @@ protectedRoutes.post('/administrador/crear-carrera', CrearCarrera.MetCrearCarrer
 // CARGA MASIVA     
 // // // // // // //
 protectedRoutes.post('/carga-masiva/usuarios-estudiantes', CargaMasiva.MetCargaMasivaEstudiantes )
+protectedRoutes.post('/carga-masiva/descargar-plantilla-estudiantes', DescargaMasivaPlantilla.MetDescargarPlantilla )
 
 // // // // // // //
 // CARGA ASISTENCIAS EVENTOS     

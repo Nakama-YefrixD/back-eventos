@@ -39,7 +39,12 @@ controller.MetEventosInscritos = async (req, res) => {
                 evtusus.eventos.fechaseventos.map((fechas) => {
                     eventos_realizados.push({
                         title : evtusus.eventos.nombre,
-                        start : fechas.fecha
+                        start : fechas.fecha,
+                        codigo : evtusus.eventos.codigo,
+                        zoom : evtusus.eventos.zoom,
+                        tipoensenanza : evtusus.eventos.tipoensenanza,
+                        sede : evtusus.eventos.sede,
+                        auditoria : evtusus.eventos.auditoria,
                     })
                 })
             })

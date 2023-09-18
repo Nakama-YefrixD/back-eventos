@@ -104,6 +104,7 @@ model fechaseventos {
   created_at    DateTime?    @default(now())
   updated_at    DateTime?    @updatedAt @db.Timestamp(0)
   eventos       eventos?     @relation(fields: [idevento], references: [id], onUpdate: Restrict, map: "fechaseventos_evento_id_foreign")
+  asistenciaseventos    asistenciaseventos[]
 }
 
 model ponenteseventos {
@@ -127,15 +128,17 @@ model eventosusuarios {
 }
 
 model asistenciaseventos {
-  id                Int          @id @default(autoincrement()) @db.UnsignedInt
-  usuid             Int?         @db.UnsignedInt
-  idevento          Int?         @db.UnsignedInt
-  codigoevento      String?      @db.VarChar(50)
-  codigoestudiante  String?      @db.VarChar(250)
-  fecha             String?      @db.VarChar(20)
-  asistio           Boolean      @default(false)
-  created_at        DateTime?    @default(now())
-  updated_at        DateTime?    @updatedAt @db.Timestamp(0)
-  eventos           eventos?     @relation(fields: [idevento], references: [id], onUpdate: Restrict, map: "asistenciaseventos_evento_id_foreign")
-  usuusuarios       usuusuarios? @relation(fields: [usuid], references: [usuid], onUpdate: Restrict, map: "asistenciaseventos_usuid_foreign")
+  id                Int            @id @default(autoincrement()) @db.UnsignedInt
+  usuid             Int?           @db.UnsignedInt
+  idevento          Int?           @db.UnsignedInt
+  id_fec_event      Int?           @db.UnsignedInt
+  codigoevento      String?        @db.VarChar(50)
+  codigoestudiante  String?        @db.VarChar(250)
+  fecha             String?        @db.VarChar(20)
+  asistio           Boolean        @default(false)
+  created_at        DateTime?      @default(now())
+  updated_at        DateTime?      @updatedAt @db.Timestamp(0)
+  eventos           eventos?       @relation(fields: [idevento], references: [id], onUpdate: Restrict, map: "asistenciaseventos_evento_id_foreign")
+  fechaseventos     fechaseventos? @relation(fields: [id_fec_event], references: [id], onUpdate: Restrict, map: "asistenciaseventos_fechaseventos_id_foreign")
+  usuusuarios       usuusuarios?   @relation(fields: [usuid], references: [usuid], onUpdate: Restrict, map: "asistenciaseventos_usuid_foreign")
 }
