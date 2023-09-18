@@ -55,7 +55,7 @@ controller.MetDescargarPlantilla = async (req, res) => {
 
                 let asitio = "Si"
 
-                if(asis_event_usuario){
+                if(asis_event_usuario.length > 0){
                     asitio = asis_event_usuario[0]['asistio'] ? "Si" : "No"
                 }
 
