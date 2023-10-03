@@ -21,14 +21,23 @@ controller.MetMostrarMisCertificados = async (req, res) => {
         })
 
         if(usuusuario){
-            certificados_usuarios = await prisma.eventosusuarios.findMany({
-                where: {
-                    usuid : usuusuario.usuid
-                },
-                include: {
-                    eventos: true
-                }
-            })
+            if(usuusuario.tpuid == 1){
+                certificados_usuarios = await prisma.eventosusuarios.findMany({
+                    include: {
+                        eventos: true
+                    },
+                    distinct: [ 'idevento' ]
+                })
+            }else{
+                certificados_usuarios = await prisma.eventosusuarios.findMany({
+                    where: {
+                        usuid : usuusuario.usuid
+                    },
+                    include: {
+                        eventos: true
+                    }
+                })
+            }
         }else{
             respuesta = true
             mensaje = "Lo sentimos el usuario no se encontro"

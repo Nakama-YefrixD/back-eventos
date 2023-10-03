@@ -18,6 +18,7 @@ const EliminarEvento = require('../Controllers/Methods/GestionEventos/EliminarEv
 const MostrarEvento  = require('../Controllers/Methods/GestionEventos/MostrarEventos')
 const MostrarFechasEventos  = require('../Controllers/Methods/GestionEventos/MostrarFechas')
 const MostrarPonentesEventos  = require('../Controllers/Methods/GestionEventos/MostrarPonentes')
+const MostrarAsistenciasEvento  = require('../Controllers/Methods/GestionEventos/MostrarAsistencias')
 
 // // // // // // // // // //
 // EVENTOS DISPONIBLES // //
@@ -29,6 +30,7 @@ const InscribirmeEvento  = require('../Controllers/Methods/EventosDisponibles/In
 // MIS CERTIFICADOS // //
 // // // // // // // // // //
 const MisCertificados = require('../Controllers/Methods/MisCertificados/MisCertificados')
+const CertificadosMostrarEstudiantesEvento = require('../Controllers/Methods/MisCertificados/MostrarEstudiantesEvento')
 
 // // // // // // // // // // // //
 // MIS HORAS EXTRACURRICULARES // //
@@ -109,7 +111,7 @@ protectedRoutes.post('/administrador/eliminar-evento', EliminarEvento.MetElimina
 protectedRoutes.post('/administrador/mostrar-eventos', MostrarEvento.MetMostrarEventos )
 protectedRoutes.post('/administrador/mostrar-fechas-eventos', MostrarFechasEventos.MetMostrarFechasEventos )
 protectedRoutes.post('/administrador/mostrar-ponentes-eventos', MostrarPonentesEventos.MetMostrarPonentesEvento )
-
+protectedRoutes.post('/administrador/mostrar-asistencias-evento', MostrarAsistenciasEvento.MetMostrarAsistencias )
 
 const storage = multer.diskStorage({
     destination: function (req, file, cb) {
@@ -178,6 +180,7 @@ protectedRoutes.post('/inscribir-usuario-evento', InscribirmeEvento.MetInscribir
 // MIS CERTIFICADOS // //
 // // // // // // // // // //
 protectedRoutes.post('/mostrar-mis-certificados', MisCertificados.MetMostrarMisCertificados )
+protectedRoutes.post('/mostrar-estudiantes-evento', CertificadosMostrarEstudiantesEvento.MetMostrarEstudiantesEvento )
 
 // // // // // // // // // // // //
 // MIS HORAS EXTRACURRICULARES // //

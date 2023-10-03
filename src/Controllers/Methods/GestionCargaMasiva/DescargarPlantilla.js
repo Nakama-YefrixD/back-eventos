@@ -14,7 +14,7 @@ controller.MetDescargarPlantilla = async (req, res) => {
 
         const usuarios_eventos = await prisma.eventosusuarios.findMany({
             where : {
-                idevento : 12
+                idevento : req_idevento
             },
             include: {
                 eventos : {

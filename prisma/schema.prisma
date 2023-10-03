@@ -116,15 +116,16 @@ model ponenteseventos {
 }
 
 model eventosusuarios {
-  id            Int          @id @default(autoincrement()) @db.UnsignedInt
-  usuid         Int?         @db.UnsignedInt
-  idevento      Int?         @db.UnsignedInt
-  certificado   String?      @db.VarChar(250)
-  encuestado    Boolean      @default(false)
-  created_at    DateTime?    @default(now())
-  updated_at    DateTime?    @updatedAt @db.Timestamp(0)
-  eventos       eventos?     @relation(fields: [idevento], references: [id], onUpdate: Restrict, map: "eventosusuarios_evento_id_foreign")
-  usuusuarios   usuusuarios? @relation(fields: [usuid], references: [usuid], onUpdate: Restrict, map: "eventosusuarios_usuid_foreign")
+  id                Int          @id @default(autoincrement()) @db.UnsignedInt
+  usuid             Int?         @db.UnsignedInt
+  idevento          Int?         @db.UnsignedInt
+  certificado       String?      @db.VarChar(250)
+  encuestado        Boolean      @default(false)
+  tiene_certificado Boolean      @default(false)
+  created_at        DateTime?    @default(now())
+  updated_at        DateTime?    @updatedAt @db.Timestamp(0)
+  eventos           eventos?     @relation(fields: [idevento], references: [id], onUpdate: Restrict, map: "eventosusuarios_evento_id_foreign")
+  usuusuarios       usuusuarios? @relation(fields: [usuid], references: [usuid], onUpdate: Restrict, map: "eventosusuarios_usuid_foreign")
 }
 
 model asistenciaseventos {

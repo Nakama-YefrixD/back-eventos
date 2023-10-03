@@ -50,6 +50,8 @@ controller.MetCargarAsistencias = async (req, res) => {
         let idsusuarios = [];
         let idsfechaseventos = [];
 
+        let usuarios_certificado = []
+
         for await(const dat of data){
 
             let evento_seleccionado = idseventos.find((idevento) => idevento.codigo == dat.codigo_evento)
@@ -147,8 +149,47 @@ controller.MetCargarAsistencias = async (req, res) => {
                         }
                     })
                 }
+
+                // VALIDAR SI SE LE ASIGANARA UN CERTIFICADO
+                const user_encontrado = usuarios_certificado.find((user_cert) => user_cert.id_event == evento_seleccionado.id && user_cert.usuid == usuario_seleccionado.usuid)
+                if(!user_encontrado){
+                    usuarios_certificado.push({
+                        id_event : evento_seleccionado.id,
+                        usuid : usuario_seleccionado.usuid,
+                        certificado : dat.asistio == "Si" ? true : false
+                    })
+                }else{
+                    if(user_encontrado.certificado == true){
+                        if(dat.asistio != "Si"){
+                            usuarios_certificado.map((user_cert, pos) => {
+                                
+                                if(user_cert.id_event == evento_seleccionado.id && user_cert.usuid == usuario_seleccionado.usuid){
+                                    usuarios_certificado[pos]['certificado'] = false
+                                }
+    
+                            })
+                        }
+                    }
+                }
             }
         }
+
+
+        for await(const user_cert of usuarios_certificado){
+            await prisma.eventosusuarios.updateMany({
+                where : {
+                    idevento : user_cert.id_event,
+                    usuid : user_cert.usuid
+                },
+                data: {
+                    tiene_certificado : user_cert.certificado
+                }
+            })
+        }
+        
+
+        console.log("usuarios_certificado");
+        console.log(usuarios_certificado);
 
         res.status(200)
         return res.json({

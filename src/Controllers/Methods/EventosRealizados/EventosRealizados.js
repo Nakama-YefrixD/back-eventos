@@ -21,14 +21,25 @@ controller.MetEventosRealizados = async (req, res) => {
         })
 
         if(usuusuario){
-            eventos_realizados = await prisma.eventosusuarios.findMany({
-                where: {
-                    usuid : usuusuario.usuid
-                },
-                include: {
-                    eventos: true
-                }
-            })
+
+            if(usuusuario.tpuid == 1){
+                eventos_realizados = await prisma.eventosusuarios.findMany({
+                    include: {
+                        eventos: true
+                    },
+                    distinct: [ 'idevento' ]
+                })
+            }else{
+                eventos_realizados = await prisma.eventosusuarios.findMany({
+                    where: {
+                        usuid : usuusuario.usuid
+                    },
+                    include: {
+                        eventos: true
+                    }
+                })
+            }
+            
         }else{
             respuesta = true
             mensaje = "Lo sentimos el usuario no se encontro"

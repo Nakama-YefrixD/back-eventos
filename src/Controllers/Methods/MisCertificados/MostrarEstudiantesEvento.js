@@ -2,7 +2,7 @@ const controller = {}
 const { PrismaClient } = require('@prisma/client')
 const prisma = new PrismaClient()
 
-controller.MetMostrarFechasEventos = async (req, res) => {
+controller.MetMostrarEstudiantesEvento = async (req, res) => {
 
     const {
         req_evento
@@ -10,23 +10,16 @@ controller.MetMostrarFechasEventos = async (req, res) => {
 
     try{
 
-        let fechas_eventos = await prisma.fechaseventos.findMany({
-            where: {
+        let eventos_usuarios = await prisma.eventosusuarios.findMany({
+            where : {
                 idevento : req_evento.id
-            },
-            include: {
-                eventos : true
             }
-        })
-        
-        fechas_eventos.map((fevento, pos) => {
-            fechas_eventos[pos]['item'] = parseInt(pos)+1
         })
 
         res.status(200)
         return res.json({
-            message : 'Fechas obtenidas correctamente',
-            data    : fechas_eventos,
+            message : 'Usuarios del evento obtenidas correctamente',
+            data    : eventos_usuarios,
             respuesta : true
         })
 
