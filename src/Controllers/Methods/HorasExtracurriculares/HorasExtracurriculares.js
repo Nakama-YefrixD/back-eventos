@@ -24,7 +24,8 @@ controller.MetMostrarHorasExtracurriculares = async (req, res) => {
         if(usuusuario){
             hrs_extracurriculares = await prisma.eventosusuarios.findMany({
                 where: {
-                    usuid : usuusuario.usuid
+                    usuid : usuusuario.usuid,
+                    tiene_certificado : true
                 },
                 include: {
                     eventos: true

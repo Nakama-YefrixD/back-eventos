@@ -24,7 +24,8 @@ controller.MetMostrarMisCertificados = async (req, res) => {
             if(usuusuario.tpuid == 1){
                 certificados_usuarios = await prisma.eventosusuarios.findMany({
                     include: {
-                        eventos: true
+                        eventos: true,
+                        usuusuarios : true
                     },
                     distinct: [ 'idevento' ]
                 })
@@ -34,7 +35,8 @@ controller.MetMostrarMisCertificados = async (req, res) => {
                         usuid : usuusuario.usuid
                     },
                     include: {
-                        eventos: true
+                        eventos: true,
+                        usuusuarios : true
                     }
                 })
             }
