@@ -36,6 +36,7 @@ controller.MetEventosInscritos = async (req, res) => {
             })
 
             eventusuarios.map(( evtusus ) => {
+                
                 evtusus.eventos.fechaseventos.map((fechas) => {
                     eventos_realizados.push({
                         title : evtusus.eventos.nombre,
@@ -45,6 +46,7 @@ controller.MetEventosInscritos = async (req, res) => {
                         tipoensenanza : evtusus.eventos.tipoensenanza,
                         sede : evtusus.eventos.sede,
                         auditoria : evtusus.eventos.auditoria,
+                        color : evtusus.eventos.color
                     })
                 })
             })

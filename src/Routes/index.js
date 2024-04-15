@@ -106,7 +106,6 @@ protectedRoutes.post('/administrador/mostrar-usuario', MostrarUsuario.MetMostrar
 // GESTION DE EVENTOS // 
 // // // // // // //  // 
 
-protectedRoutes.post('/administrador/editar-evento', EditarEvento.MetEditarEvento )
 protectedRoutes.post('/administrador/eliminar-evento', EliminarEvento.MetEliminarEvento )
 protectedRoutes.post('/administrador/mostrar-eventos', MostrarEvento.MetMostrarEventos )
 protectedRoutes.post('/administrador/mostrar-fechas-eventos', MostrarFechasEventos.MetMostrarFechasEventos )
@@ -128,6 +127,10 @@ const upload = multer({ storage });
 
 protectedRoutes.post('/administrador/crear-evento', (req, res) => {
     return CrearEvento.MetCrearEvento(req, res)
+})
+
+protectedRoutes.post('/administrador/editar-evento',  (req, res) => {
+    return EditarEvento.MetEditarEvento(req, res)
 })
 
 
@@ -210,6 +213,15 @@ publicRoutes.get('/mostrar-flyter-evento/:file', (req, res) => {
     res.sendFile(filePath);
 });
 
+// publicRoutes.get('/mostrar-certificado-evento/:file', (req, res) => {
+//     const {
+//         file
+//     } = req.params
+
+//     const filePath = path.join(__dirname, '../public/eventos/certificados/'+file);
+//     res.sendFile(filePath);
+// });
+
 publicRoutes.get('/mostrar-certificado-evento/:file', (req, res) => {
     const {
         file
@@ -218,7 +230,6 @@ publicRoutes.get('/mostrar-certificado-evento/:file', (req, res) => {
     const filePath = path.join(__dirname, '../public/eventos/certificados/'+file);
     res.sendFile(filePath);
 });
-
 
 // // // // // // // // // // // // // 
 // OTROS | MOSTRAR LISTA DE PONENTES //

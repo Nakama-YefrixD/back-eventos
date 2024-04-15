@@ -30,6 +30,7 @@ model usuusuarios {
     tputiposusuarios            tputiposusuarios              @relation(fields: [tpuid], references: [tpuid], onUpdate: Restrict, map: "usuusuarios_tpuid_foreign")
     eventosusuarios             eventosusuarios[]
     asistenciaseventos          asistenciaseventos[]
+    ponenteseventos             ponenteseventos[]
 }
 
 model tputiposusuarios {
@@ -81,6 +82,9 @@ model eventos {
   organizacion          String?         @db.VarChar(150)
   zoom                  String?         @db.VarChar(150)
   linkflyer             String?         @db.VarChar(150)
+  linkcertificado       String?         @db.VarChar(150)
+  linkencuesta          String?         @db.VarChar(200)
+  color                 String?         @db.VarChar(50)
   sede                  String?         @db.VarChar(150)
   auditoria             String?         @db.VarChar(150)
   nombre                String?         @db.VarChar(150)
@@ -110,9 +114,11 @@ model fechaseventos {
 model ponenteseventos {
   id            Int          @id @default(autoincrement()) @db.UnsignedInt
   idevento      Int?         @db.UnsignedInt
+  usuid         Int?         @db.UnsignedInt
   ponente       String?      @db.VarChar(150)
   created_at    DateTime?    @default(now())
   updated_at    DateTime?    @updatedAt @db.Timestamp(0)
+  usuusuarios   usuusuarios? @relation(fields: [usuid], references: [usuid], onUpdate: Restrict, map: "ponenteseventos_usuid_foreign")
 }
 
 model eventosusuarios {

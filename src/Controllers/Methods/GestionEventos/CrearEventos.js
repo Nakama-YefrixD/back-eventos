@@ -13,6 +13,7 @@ controller.MetCrearEvento = async (req, res) => {
         req_tipoevento,
         req_organizacion,
         req_zoom,
+        req_linkEncuesta,
         req_linkflyer,
         req_sede,
         req_auditoria,
@@ -28,33 +29,55 @@ controller.MetCrearEvento = async (req, res) => {
 
         const codigoevento = crypto.randomBytes(10).toString('hex')
 
-        let resultado = null
+        let resultado_flyer = null
+        let resultado_certificado = null
         
         if(req.files){
-            // ALMACENAR EL ARCHIVO EN EL SERVIDOR
-            let EDFile = req.files.archivo
-            const longtxt = await GenerateRandomString(5)
-            const nombrearchivo = EDFile.name
-            resultado = `${nombrearchivo.split(".")[0]}-${longtxt}.${nombrearchivo.split(".")[1]}`;
-            // const rutaexactaflyer = `./src/public/eventos/flyer/${resultado}`
-            const rutaexactaflyer = `src/public/eventos/flyer/${resultado}`
 
-            EDFile.mv(rutaexactaflyer,err => {
-                if(err) return res.status(500).send({ message : err })
-            })
+            const longtxt = await GenerateRandomString(5)
+
+            if(req.files.archivo){
+                // ALMACENAR EL ARCHIVO EN EL SERVIDOR
+                let EDFile = req.files.archivo    
+                const nombrearchivo = EDFile.name
+                resultado_flyer = `${nombrearchivo.split(".")[0]}-${longtxt}.${nombrearchivo.split(".")[1]}`;
+                const rutaexactaflyer = `src/public/eventos/flyer/${resultado_flyer}`
+
+                EDFile.mv(rutaexactaflyer,err => {
+                    if(err) return res.status(500).send({ message : err })
+                })
+            }
+
+            if(req.files.fileCertificado){
+                // ALMACENAR LA PLANTILLA DEL CERTIFICADO EN EL SERVIDOR
+                let EDFileCertificado = req.files.fileCertificado
+                const nombrearchivoCertificado = EDFileCertificado.name
+                resultado_certificado = `${nombrearchivoCertificado.split(".")[0]}-${longtxt}.${nombrearchivoCertificado.split(".")[1]}`;
+                const rutaexactaCertificado = `src/public/eventos/certificados/${resultado_certificado}`
+
+                EDFileCertificado.mv(rutaexactaCertificado,err => {
+                    if(err) return res.status(500).send({ message : err })
+                })
+            }
         }
+
+        const coloreseventos = ["red", "blue", "black", "green", "orange", "gray", "#a0c4ff", "#abc4ff"]
+        const indiceAleatorio = Math.floor(Math.random() * coloreseventos.length);
 
         const nevento = await prisma.eventos.create({
             data: {
                 codigo  : codigoevento,
                 carrera : parseInt(req_carrera),
-                recurrente : Boolean(req_recurrente),
+                recurrente : req_recurrente == "false" ? false : true,
                 tipoensenanza : req_tipoensenanza,
                 clasificacionevento : req_clasificacionevento,
                 tipoevento : req_tipoevento,
                 organizacion : req_organizacion,
                 zoom : req_zoom,
-                linkflyer : '/mostrar-flyter-evento/'+resultado,
+                color : coloreseventos[indiceAleatorio],
+                linkencuesta : req_linkEncuesta,
+                linkflyer : '/mostrar-flyter-evento/'+resultado_flyer,
+                linkcertificado : '/mostrar-certificado-evento/'+resultado_certificado,
                 sede : req_sede,
                 auditoria : req_auditoria,
                 nombre : req_nombre,

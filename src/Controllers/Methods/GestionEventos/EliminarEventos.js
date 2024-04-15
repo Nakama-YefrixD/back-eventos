@@ -10,6 +10,32 @@ controller.MetEliminarEvento = async (req, res) => {
 
     try{
 
+        // Borrar las fechas y los ponentes de un evento
+        await prisma.fechaseventos.deleteMany({
+            where: {
+                idevento : parseInt(req_id)
+            }
+        })
+
+        await prisma.ponenteseventos.deleteMany({
+            where: {
+                idevento : parseInt(req_id)
+            }
+        })
+
+        await prisma.eventosusuarios.deleteMany({
+            where: {
+                idevento : parseInt(req_id)
+            }
+        })
+
+        await prisma.asistenciaseventos.deleteMany({
+            where: {
+                idevento : parseInt(req_id)
+            }
+        })
+        
+
         await prisma.eventos.delete({
             where: {
                 id: parseInt(req_id)

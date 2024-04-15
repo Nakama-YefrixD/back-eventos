@@ -5,23 +5,37 @@ const prisma = new PrismaClient()
 controller.MetEventosHome = async (req, res) => {
 
     const {
-        
+        req_usutoken
     } = req.body;
 
     try{
 
-        let list_eventos = await prisma.eventos.findMany({
-            orderBy: {
-                created_at: 'desc'
-            },
-            select: {
-                carreras : true,
-                id: true,
-                nombre: true,
-                fechaseventos: true,
-                linkflyer: true
+        const usuusuario = await prisma.usuusuarios.findFirst({
+            where:{
+                usutoken : req_usutoken
             }
         })
+
+        let list_eventos = []
+
+        if(usuusuario){
+            list_eventos = await prisma.eventos.findMany({
+                include: {
+                    eventosusuarios: {
+                        where: {
+                            usuid: usuusuario.usuid,
+                        }
+                    },
+                    carreras : true
+                },
+                orderBy: {
+                    created_at: 'desc'
+                },
+                where: {
+                    estado: true
+                }
+            })
+        }
 
         let posEvento = 0
         for await(const evento of list_eventos){
@@ -34,6 +48,7 @@ controller.MetEventosHome = async (req, res) => {
 
             list_eventos[posEvento]['ponentes'] = ponentesEventos
             list_eventos[posEvento]['ponente'] = ponentesEventos ?ponentesEventos[0] : {}
+            posEvento++;
         }
 
         res.status(200)

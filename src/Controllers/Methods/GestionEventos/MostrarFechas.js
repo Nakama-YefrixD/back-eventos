@@ -12,7 +12,7 @@ controller.MetMostrarFechasEventos = async (req, res) => {
 
         let fechas_eventos = await prisma.fechaseventos.findMany({
             where: {
-                idevento : req_evento.id
+                idevento : req_evento.idevento
             },
             include: {
                 eventos : true

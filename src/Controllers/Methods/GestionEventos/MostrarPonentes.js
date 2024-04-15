@@ -18,6 +18,8 @@ controller.MetMostrarPonentesEvento = async (req, res) => {
         
         ponentes_evento.map((pevento, pos) => {
             ponentes_evento[pos]['item'] = parseInt(pos)+1
+            ponentes_evento[pos]['value'] = ponentes_evento[pos]['ponente']
+            ponentes_evento[pos]['label'] = ponentes_evento[pos]['ponente']
         })
 
         res.status(200)
