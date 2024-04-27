@@ -81,6 +81,9 @@ controller.MetEditarEvento = async (req, res) => {
                     fechora  : reqfecha.fechora,
                     fecha    : fecha_obtenida,
                     hora     : hora_obtenida,
+                    sede     : reqfecha.sede,
+                    lugar    : reqfecha.lugar,
+                    linkzoom : reqfecha.linkzoom
                 }
             })
         }

@@ -213,6 +213,18 @@ publicRoutes.get('/mostrar-flyter-evento/:file', (req, res) => {
     res.sendFile(filePath);
 });
 
+// // // // // // // // // //
+// DESCARGAR PLANTILLA ESTUDIANTES // //
+// // // // // // // // // //
+publicRoutes.get('/descargar-plantilla-estudiante/:file', (req, res) => {
+    const {
+        file
+    } = req.params
+
+    const filePath = path.join(__dirname, '../public/carga/estudiantes/'+file);
+    res.sendFile(filePath);
+});
+
 // publicRoutes.get('/mostrar-certificado-evento/:file', (req, res) => {
 //     const {
 //         file

@@ -73,13 +73,13 @@ controller.MetCrearEvento = async (req, res) => {
                 clasificacionevento : req_clasificacionevento,
                 tipoevento : req_tipoevento,
                 organizacion : req_organizacion,
-                zoom : req_zoom,
+                // zoom : req_zoom,
                 color : coloreseventos[indiceAleatorio],
                 linkencuesta : req_linkEncuesta,
                 linkflyer : '/mostrar-flyter-evento/'+resultado_flyer,
                 linkcertificado : '/mostrar-certificado-evento/'+resultado_certificado,
-                sede : req_sede,
-                auditoria : req_auditoria,
+                // sede : req_sede,
+                // auditoria : req_auditoria,
                 nombre : req_nombre,
                 estado : Boolean(req_estado),
                 cupos : req_cupos ? parseInt(req_cupos) : null,
@@ -102,6 +102,9 @@ controller.MetCrearEvento = async (req, res) => {
                     fechora  : reqfecha.fecha,
                     fecha    : fecha_obtenida,
                     hora     : hora_obtenida,
+                    sede     : reqfecha.sede,
+                    lugar    : reqfecha.lugar,
+                    linkzoom : reqfecha.linkzzom
                 }
             })
         }

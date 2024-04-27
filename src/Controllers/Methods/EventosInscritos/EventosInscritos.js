@@ -42,10 +42,10 @@ controller.MetEventosInscritos = async (req, res) => {
                         title : evtusus.eventos.nombre,
                         start : fechas.fecha,
                         codigo : evtusus.eventos.codigo,
-                        zoom : evtusus.eventos.zoom,
+                        zoom : fechas.linkzoom,
                         tipoensenanza : evtusus.eventos.tipoensenanza,
-                        sede : evtusus.eventos.sede,
-                        auditoria : evtusus.eventos.auditoria,
+                        sede : fechas.sede,
+                        auditoria : fechas.lugar,
                         color : evtusus.eventos.color
                     })
                 })
