@@ -8,8 +8,8 @@ controller.MetCrearEncuestaSatisfaccion = async (req, res) => {
   try {
     let encuestasatisfaccion = await prisma.encuestassatisfaccion.create({
       data: {
-        eventoId: req_evento.id,
-        usuarioId: req_usuario.id,
+        idevento: req_evento.id,
+        usuid: req_usuario.id,
       },
     });
 
@@ -19,18 +19,18 @@ controller.MetCrearEncuestaSatisfaccion = async (req, res) => {
           data: {
             pregunta: pregunta.pregunta,
             respuesta: pregunta.respuesta,
-            encuestasatisfaccionId: encuestasatisfaccion.id,
-          }
+            idencuesta: encuestasatisfaccion.id,
+          },
         });
       });
 
-      await prisma.eventos_usuarios.updateMany({
+      await prisma.eventosusuarios.updateMany({
         where: {
-          eventoId: req_evento.id,
-          usuarioId: req_usuario.id,
+          idevento: req_evento.id,
+          usuid: req_usuario.id,
         },
         data: {
-          encuestaSatisfaccion: true,
+          encuestado: true,
         },
       });
     }
@@ -44,7 +44,8 @@ controller.MetCrearEncuestaSatisfaccion = async (req, res) => {
     console.log(error);
     res.status(500);
     return res.json({
-      message: "Lo sentimos hubo un error al momento de crear la encuesta de satisfacción",
+      message:
+        "Lo sentimos hubo un error al momento de crear la encuesta de satisfacción",
       devmsg: error,
       respuesta: false,
     });
