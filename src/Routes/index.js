@@ -118,6 +118,14 @@ protectedRoutes.post('/administrador/mostrar-eventos', MostrarEvento.MetMostrarE
 protectedRoutes.post('/administrador/mostrar-fechas-eventos', MostrarFechasEventos.MetMostrarFechasEventos )
 protectedRoutes.post('/administrador/mostrar-ponentes-eventos', MostrarPonentesEventos.MetMostrarPonentesEvento )
 protectedRoutes.post('/administrador/mostrar-asistencias-evento', MostrarAsistenciasEvento.MetMostrarAsistencias )
+protectedRoutes.post(
+  "/administrador/mostrar-asistencias-usuario-evento",
+  MostrarAsistenciasEvento.MetMostrarAsistenciasUsuario
+);
+protectedRoutes.post(
+  "/administrador/mostrar-encuesta-usuario-evento",
+  MostrarAsistenciasEvento.MetMostrarEncuestaUsuario
+);
 
 // // // // // // // // // //
 // INSCRITOS A UN EVENTOS // //
