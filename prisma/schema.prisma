@@ -1,45 +1,45 @@
 generator client {
-    provider = "prisma-client-js"
+  provider = "prisma-client-js"
 }
 
 datasource db {
-    provider = "mysql"
-    url      = env("DATABASE_URL")
+  provider = "mysql"
+  url      = env("DATABASE_URL")
 }
 
-
 model usuusuarios {
-    usuid                       Int                           @id @default(autoincrement()) @db.UnsignedInt
-    tpuid                       Int                           @db.UnsignedInt
-    usutipo_documento_identidad String?                       @db.VarChar(15)
-    usunumero_dni               String?                       @db.VarChar(20)
-    usucodigo_ucs               String?                       @db.VarChar(255)
-    usufecha_nacimiento         String?                       @db.VarChar(50)
-    usucelular                  String?                       @db.VarChar(20)
-    usurol                      String?                       @db.VarChar(255)
-    usunombre                   String?                       @db.VarChar(255)
-    usuapell_paterno            String?                       @db.VarChar(255)
-    usuapell_materno            String?                       @db.VarChar(255)
-    usuimagen                   String?                       @db.VarChar(255)
-    usuusuario                  String?                       @db.VarChar(255)    
-    usucontrasena               String?                       @db.VarChar(255)
-    usutoken                    String                        @db.VarChar(255)
-    usuestado                   Boolean                       @default(true)
-    created_at                  DateTime?                     @default(now())
-    updated_at                  DateTime?                     @updatedAt @db.Timestamp(0)
-    tputiposusuarios            tputiposusuarios              @relation(fields: [tpuid], references: [tpuid], onUpdate: Restrict, map: "usuusuarios_tpuid_foreign")
-    eventosusuarios             eventosusuarios[]
-    asistenciaseventos          asistenciaseventos[]
-    ponenteseventos             ponenteseventos[]
+  usuid                       Int                     @id @default(autoincrement()) @db.UnsignedInt
+  tpuid                       Int                     @db.UnsignedInt
+  usutipo_documento_identidad String?                 @db.VarChar(15)
+  usunumero_dni               String?                 @db.VarChar(20)
+  usucodigo_ucs               String?                 @db.VarChar(255)
+  usufecha_nacimiento         String?                 @db.VarChar(50)
+  usucelular                  String?                 @db.VarChar(20)
+  usurol                      String?                 @db.VarChar(255)
+  usunombre                   String?                 @db.VarChar(255)
+  usuapell_paterno            String?                 @db.VarChar(255)
+  usuapell_materno            String?                 @db.VarChar(255)
+  usuimagen                   String?                 @db.VarChar(255)
+  usuusuario                  String?                 @db.VarChar(255)
+  usucontrasena               String?                 @db.VarChar(255)
+  usutoken                    String                  @db.VarChar(255)
+  usuestado                   Boolean                 @default(true)
+  created_at                  DateTime?               @default(now())
+  updated_at                  DateTime?               @updatedAt @db.Timestamp(0)
+  tputiposusuarios            tputiposusuarios        @relation(fields: [tpuid], references: [tpuid], onUpdate: Restrict, map: "usuusuarios_tpuid_foreign")
+  eventosusuarios             eventosusuarios[]
+  asistenciaseventos          asistenciaseventos[]
+  ponenteseventos             ponenteseventos[]
+  encuestassatisfaccion       encuestassatisfaccion[]
 }
 
 model tputiposusuarios {
-    tpuid                    Int                        @id @default(autoincrement()) @db.UnsignedInt
-    tpunombre                String                     @db.VarChar(255)
-    created_at               DateTime?                  @default(now())
-    updated_at               DateTime?                  @updatedAt @db.Timestamp(0)
-    usuusuarios              usuusuarios[]
-    tuptiposusuariospermisos tuptiposusuariospermisos[]
+  tpuid                    Int                        @id @default(autoincrement()) @db.UnsignedInt
+  tpunombre                String                     @db.VarChar(255)
+  created_at               DateTime?                  @default(now())
+  updated_at               DateTime?                  @updatedAt @db.Timestamp(0)
+  usuusuarios              usuusuarios[]
+  tuptiposusuariospermisos tuptiposusuariospermisos[]
 }
 
 model pempermisos {
@@ -64,64 +64,65 @@ model tuptiposusuariospermisos {
 }
 
 model carreras {
-  id           Int          @id @default(autoincrement()) @db.UnsignedInt
-  nombre       String?      @db.VarChar(150)
-  created_at   DateTime?    @default(now())
-  updated_at   DateTime?    @updatedAt @db.Timestamp(0)
-  eventos      eventos[]
+  id         Int       @id @default(autoincrement()) @db.UnsignedInt
+  nombre     String?   @db.VarChar(150)
+  created_at DateTime? @default(now())
+  updated_at DateTime? @updatedAt @db.Timestamp(0)
+  eventos    eventos[]
 }
 
 model eventos {
-  id                    Int             @id @default(autoincrement()) @db.UnsignedInt
-  carrera               Int?            @db.UnsignedInt
-  recurrente            Boolean         @default(false)
-  codigo                String?         @db.VarChar(50)
-  tipoensenanza         String?         @db.VarChar(50)
-  clasificacionevento   String?         @db.VarChar(50)
-  tipoevento            String?         @db.VarChar(50)
-  organizacion          String?         @db.VarChar(150)
-  zoom                  String?         @db.VarChar(150)
-  linkflyer             String?         @db.VarChar(150)
-  linkcertificado       String?         @db.VarChar(150)
-  linkencuesta          String?         @db.VarChar(200)
-  color                 String?         @db.VarChar(50)
-  sede                  String?         @db.VarChar(150)
-  auditoria             String?         @db.VarChar(150)
-  nombre                String?         @db.VarChar(150)
-  estado                Boolean         @default(true)
-  cupos                 Int?            @db.Int()
-  hrsextracurriculares  Int?            @db.Int()
-  created_at            DateTime?       @default(now())
-  updated_at            DateTime?       @updatedAt @db.Timestamp(0)
-  carreras              carreras?       @relation(fields: [carrera], references: [id], onUpdate: Restrict, map: "eventos_carrera_id_foreign")
+  id                    Int                     @id @default(autoincrement()) @db.UnsignedInt
+  carrera               Int?                    @db.UnsignedInt
+  recurrente            Boolean                 @default(false)
+  codigo                String?                 @db.VarChar(50)
+  tipoensenanza         String?                 @db.VarChar(50)
+  clasificacionevento   String?                 @db.VarChar(50)
+  tipoevento            String?                 @db.VarChar(50)
+  organizacion          String?                 @db.VarChar(150)
+  zoom                  String?                 @db.VarChar(150)
+  linkflyer             String?                 @db.VarChar(150)
+  linkcertificado       String?                 @db.VarChar(150)
+  linkencuesta          String?                 @db.VarChar(200)
+  color                 String?                 @db.VarChar(50)
+  sede                  String?                 @db.VarChar(150)
+  auditoria             String?                 @db.VarChar(150)
+  nombre                String?                 @db.VarChar(150)
+  estado                Boolean                 @default(true)
+  cupos                 Int?                    @db.Int()
+  hrsextracurriculares  Int?                    @db.Int()
+  created_at            DateTime?               @default(now())
+  updated_at            DateTime?               @updatedAt @db.Timestamp(0)
+  carreras              carreras?               @relation(fields: [carrera], references: [id], onUpdate: Restrict, map: "eventos_carrera_id_foreign")
   fechaseventos         fechaseventos[]
   eventosusuarios       eventosusuarios[]
   asistenciaseventos    asistenciaseventos[]
+  encuestassatisfaccion encuestassatisfaccion[]
 }
 
 model fechaseventos {
-  id            Int          @id @default(autoincrement()) @db.UnsignedInt
-  idevento      Int?         @db.UnsignedInt
-  fechora       String?      @db.VarChar(50)
-  fecha         String?      @db.VarChar(50)
-  hora          String?      @db.VarChar(50)
-  sede          String?      @db.VarChar(150)
-  lugar         String?      @db.VarChar(250)
-  linkzoom      String?      @db.VarChar(250)
-  created_at    DateTime?    @default(now())
-  updated_at    DateTime?    @updatedAt @db.Timestamp(0)
-  eventos       eventos?     @relation(fields: [idevento], references: [id], onUpdate: Restrict, map: "fechaseventos_evento_id_foreign")
-  asistenciaseventos    asistenciaseventos[]
+  id                 Int                  @id @default(autoincrement()) @db.UnsignedInt
+  idevento           Int?                 @db.UnsignedInt
+  fechora            String?              @db.VarChar(50)
+  fecha              String?              @db.VarChar(50)
+  hora               String?              @db.VarChar(50)
+  sede               String?              @db.VarChar(150)
+  lugar              String?              @db.VarChar(250)
+  linkzoom           String?              @db.VarChar(250)
+  created_at         DateTime?            @default(now())
+  updated_at         DateTime?            @updatedAt @db.Timestamp(0)
+  eventos            eventos?             @relation(fields: [idevento], references: [id], onUpdate: Restrict, map: "fechaseventos_evento_id_foreign")
+  asistenciaseventos asistenciaseventos[]
 }
 
 model ponenteseventos {
-  id            Int          @id @default(autoincrement()) @db.UnsignedInt
-  idevento      Int?         @db.UnsignedInt
-  usuid         Int?         @db.UnsignedInt
-  ponente       String?      @db.VarChar(150)
-  created_at    DateTime?    @default(now())
-  updated_at    DateTime?    @updatedAt @db.Timestamp(0)
-  usuusuarios   usuusuarios? @relation(fields: [usuid], references: [usuid], onUpdate: Restrict, map: "ponenteseventos_usuid_foreign")
+  id          Int          @id @default(autoincrement()) @db.UnsignedInt
+  idevento    Int?         @db.UnsignedInt
+  usuid       Int?         @db.UnsignedInt
+  ponente     String?      @db.VarChar(150)
+  created_at  DateTime?    @default(now())
+  updated_at  DateTime?    @updatedAt @db.Timestamp(0)
+  usuusuarios usuusuarios? @relation(fields: [usuid], references: [usuid], onUpdate: Restrict, map: "ponenteseventos_usuid_foreign")
 }
 
 model eventosusuarios {
@@ -138,17 +139,39 @@ model eventosusuarios {
 }
 
 model asistenciaseventos {
-  id                Int            @id @default(autoincrement()) @db.UnsignedInt
-  usuid             Int?           @db.UnsignedInt
-  idevento          Int?           @db.UnsignedInt
-  id_fec_event      Int?           @db.UnsignedInt
-  codigoevento      String?        @db.VarChar(50)
-  codigoestudiante  String?        @db.VarChar(250)
-  fecha             String?        @db.VarChar(20)
-  asistio           Boolean        @default(false)
-  created_at        DateTime?      @default(now())
-  updated_at        DateTime?      @updatedAt @db.Timestamp(0)
-  eventos           eventos?       @relation(fields: [idevento], references: [id], onUpdate: Restrict, map: "asistenciaseventos_evento_id_foreign")
-  fechaseventos     fechaseventos? @relation(fields: [id_fec_event], references: [id], onUpdate: Restrict, map: "asistenciaseventos_fechaseventos_id_foreign")
-  usuusuarios       usuusuarios?   @relation(fields: [usuid], references: [usuid], onUpdate: Restrict, map: "asistenciaseventos_usuid_foreign")
+  id               Int            @id @default(autoincrement()) @db.UnsignedInt
+  usuid            Int?           @db.UnsignedInt
+  idevento         Int?           @db.UnsignedInt
+  id_fec_event     Int?           @db.UnsignedInt
+  codigoevento     String?        @db.VarChar(50)
+  codigoestudiante String?        @db.VarChar(250)
+  fecha            String?        @db.VarChar(20)
+  asistio          Boolean        @default(false)
+  created_at       DateTime?      @default(now())
+  updated_at       DateTime?      @updatedAt @db.Timestamp(0)
+  eventos          eventos?       @relation(fields: [idevento], references: [id], onUpdate: Restrict, map: "asistenciaseventos_evento_id_foreign")
+  fechaseventos    fechaseventos? @relation(fields: [id_fec_event], references: [id], onUpdate: Restrict, map: "asistenciaseventos_fechaseventos_id_foreign")
+  usuusuarios      usuusuarios?   @relation(fields: [usuid], references: [usuid], onUpdate: Restrict, map: "asistenciaseventos_usuid_foreign")
+}
+
+model encuestassatisfaccion {
+  id                 Int                  @id @default(autoincrement()) @db.UnsignedInt
+  idevento           Int?                 @db.UnsignedInt
+  usuid              Int?                 @db.UnsignedInt
+  created_at         DateTime?            @default(now())
+  updated_at         DateTime?            @updatedAt @db.Timestamp(0)
+  eventos            eventos?             @relation(fields: [idevento], references: [id], onUpdate: Restrict, map: "encuestassatisfaccion_evento_id_foreign")
+  usuusuarios        usuusuarios?         @relation(fields: [usuid], references: [usuid], onUpdate: Restrict, map: "encuestassatisfaccion_usuid_foreign")
+  preguntasencuestas preguntasencuestas[]
+}
+
+model preguntasencuestas {
+  id         Int       @id @default(autoincrement()) @db.UnsignedInt
+  idencuesta Int?      @db.UnsignedInt
+  pregunta   String?   @db.VarChar(255)
+  respuesta  String?   @db.VarChar(300)
+  created_at DateTime? @default(now())
+  updated_at DateTime? @updatedAt @db.Timestamp(0)
+
+  encuestassatisfaccion encuestassatisfaccion? @relation(fields: [idencuesta], references: [id], onUpdate: Restrict, map: "preguntasencuestas_encuestassatisfaccion_id_foreign")
 }

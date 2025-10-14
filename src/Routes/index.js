@@ -21,6 +21,11 @@ const MostrarPonentesEventos  = require('../Controllers/Methods/GestionEventos/M
 const MostrarAsistenciasEvento  = require('../Controllers/Methods/GestionEventos/MostrarAsistencias')
 
 // // // // // // // // // //
+// INSCRITOS A UN EVENTOS // //
+// // // // // // // // // //
+const MostrarInscritosEvento  = require('../Controllers/Methods/GestionEventos/MostrarInscritos')
+
+// // // // // // // // // //
 // EVENTOS DISPONIBLES // //
 // // // // // // // // // //
 const MostrarEventosDisponibles  = require('../Controllers/Methods/EventosDisponibles/MostrarEventosDisponibles')
@@ -31,6 +36,8 @@ const InscribirmeEvento  = require('../Controllers/Methods/EventosDisponibles/In
 // // // // // // // // // //
 const MisCertificados = require('../Controllers/Methods/MisCertificados/MisCertificados')
 const CertificadosMostrarEstudiantesEvento = require('../Controllers/Methods/MisCertificados/MostrarEstudiantesEvento')
+const CertificadosEncuestaEstudiantesEvento = require('../Controllers/Methods/MisCertificados/EncuestaCertificadoEvento')
+
 
 // // // // // // // // // // // //
 // MIS HORAS EXTRACURRICULARES // //
@@ -112,6 +119,12 @@ protectedRoutes.post('/administrador/mostrar-fechas-eventos', MostrarFechasEvent
 protectedRoutes.post('/administrador/mostrar-ponentes-eventos', MostrarPonentesEventos.MetMostrarPonentesEvento )
 protectedRoutes.post('/administrador/mostrar-asistencias-evento', MostrarAsistenciasEvento.MetMostrarAsistencias )
 
+// // // // // // // // // //
+// INSCRITOS A UN EVENTOS // //
+// // // // // // // // // //
+protectedRoutes.post('/administrador/mostrar-inscritos-eventos', MostrarInscritosEvento.MetMostrarInscritos )
+
+
 const storage = multer.diskStorage({
     destination: function (req, file, cb) {
         // Aquí especificas la carpeta donde deseas almacenar los archivos dentro de la API
@@ -184,6 +197,10 @@ protectedRoutes.post('/inscribir-usuario-evento', InscribirmeEvento.MetInscribir
 // // // // // // // // // //
 protectedRoutes.post('/mostrar-mis-certificados', MisCertificados.MetMostrarMisCertificados )
 protectedRoutes.post('/mostrar-estudiantes-evento', CertificadosMostrarEstudiantesEvento.MetMostrarEstudiantesEvento )
+protectedRoutes.post(
+  "/crear-encuesta-satisfaccion",
+  CertificadosEncuestaEstudiantesEvento.MetCrearEncuestaSatisfaccion
+);
 
 // // // // // // // // // // // //
 // MIS HORAS EXTRACURRICULARES // //
