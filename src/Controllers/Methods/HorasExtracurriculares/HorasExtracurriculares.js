@@ -58,8 +58,7 @@ controller.MetMostrarHorasExtracurriculares = async (req, res) => {
 };
 
 controller.MetDescargarHorasExtracurriculares = async (req, res) => {
-  const req_usutoken =
-    "cab51189332def3b864c64dd595e90adbf671d62ac70c7e2d6eb9c29da2a";
+    const { req_usutoken } = req.body;
 
   try {
     const usuario = await prisma.usuusuarios.findFirst({

@@ -214,7 +214,7 @@ protectedRoutes.post(
 // MIS HORAS EXTRACURRICULARES // //
 // // // // // // // // // // // //
 protectedRoutes.post('/mostrar-mis-hrs-extracurriculares', MisHrsExtracurriculares.MetMostrarHorasExtracurriculares )
-protectedRoutes.get(
+protectedRoutes.post(
   "/mostrar-mis-hrs-extracurriculares/descargar-total",
   MisHrsExtracurriculares.MetDescargarHorasExtracurriculares
 );
