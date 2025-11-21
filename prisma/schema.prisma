@@ -91,6 +91,7 @@ model eventos {
   estado                Boolean                 @default(true)
   cupos                 Int?                    @db.Int()
   hrsextracurriculares  Int?                    @db.Int()
+  cargoasistencia       Boolean                 @default(false)
   created_at            DateTime?               @default(now())
   updated_at            DateTime?               @updatedAt @db.Timestamp(0)
   carreras              carreras?               @relation(fields: [carrera], references: [id], onUpdate: Restrict, map: "eventos_carrera_id_foreign")
